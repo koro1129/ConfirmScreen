@@ -1,0 +1,73 @@
+﻿@model ConfirmScreen.ViewModels.MoviewEditViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Movie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Movie.Id" />
+            <div class="form-group">
+                <label asp-for="Movie.Title" class="control-label"></label>：
+                <input type="hidden" asp-for="Movie.Title" class="form-control" />
+                <span>@Model.Movie.Title</span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.Impression" class="control-label"></label>：
+                <textarea type="hidden" asp-for="Movie.Impression" class="form-control hidden"></textarea>
+                <span>
+                    @if (!string.IsNullOrEmpty(Model.Movie.Impression))
+                    {
+                        @Html.Raw(System.Web.HttpUtility.HtmlEncode(Model.Movie.Impression.Replace("\r\n", "<br>")).Replace("&lt;br&gt;", "<br>"))
+                    }
+                </span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.ReleaseDate" class="control-label"></label>：
+                <input type="hidden" asp-for="Movie.ReleaseDate" class="form-control" />
+                <span>@Model.Movie.ReleaseDate</span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.Genre" class="control-label"></label>：
+                <input type="hidden" asp-for="Movie.Genre" class="form-control" />
+                <span>
+                    @Model.GenreList.FirstOrDefault(g => g.Value == Model.Movie.Genre).Text
+                </span>
+
+                @for (var i = 0; i < Model.GenreList.Count(); i++)
+                {
+                    <input type="hidden" asp-for="@Model.GenreList[i].Text" />
+                    <input type="hidden" asp-for="@Model.GenreList[i].Value" />
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.Price" class="control-label"></label>：
+                <input type="hidden" asp-for="Movie.Price" class="form-control" />
+                <span>@Model.Movie.Price</span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.Rating" class="control-label"></label>：
+                <input type="hidden" asp-for="Movie.Rating" class="form-control" />
+                <span>@Model.Movie.Rating</span>
+            </div>
+            <div class="form-group">
+                <back value="戻る" 　class="btn btn-default bg-primary"></back>
+                <submit value="変更" 　class="btn btn-default bg-primary"></submit>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
